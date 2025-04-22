@@ -285,34 +285,102 @@ const products = [
     excerpt: "lorem ipsum dolor sit amet",
   },
 ];
+import { FiFilter } from "react-icons/fi";
+import {
+  HiOutlineShoppingBag,
+  HiOutlineSearch,
+  HiOutlineUser,
+  HiOutlineHeart,
+} from "react-icons/hi";
 export default function ProductPage() {
   return (
-    <div className="px-6">
-      <div className="flex flex-row gap-1 flex-wrap">
-        {products.map((product, index) => {
-          return (
-            <div
-              key={`product.name ${index}`}
-              className="border border-solid border-green-500"
-            >
-              <img
-                src={product.thumbnail}
-                className="w-[485] h-[500] object-cover"
-              />
-              <div>
-                <p>{product.name}</p>
-                <p>
-                  {product.tags.map((tag, index, tags) => {
-                    if (index < tags.length - 1)
-                      return <span key={index}>{tag}, </span>;
-                    else return <span key={index}>{tag}</span>;
-                  })}
-                </p>
-              </div>
-            </div>
-          );
-        })}
+    <div className="min-h-screen flex flex-col">
+      {/* Header */}
+      <header className="sticky top-0 z-50 bg-white">
+        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+          <div className="text-2xl font-bold"></div>
+          <div className="text-xl font-bold">VANS</div>
+          <div className="flex gap-4 text-xl">
+            <HiOutlineUser />
+            <HiOutlineHeart />
+            <HiOutlineShoppingBag />
+          </div>
+        </div>
+      </header>
+
+      <div className="flex items-center justify-center gap-4 w-full px-4 py-2">
+        <div className="flex items-center w-[800] bg-[#f3f3f3] px-3 py-4">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-5 h-5 text-gray-400 mr-2"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M21 21l-4.35-4.35M16.65 17.65A7.5 7.5 0 1010 2.5a7.5 7.5 0 006.65 15.15z"
+            />
+          </svg>
+          <input
+            type="text"
+            placeholder="What are you looking for?"
+            className="flex-grow outline-none bg-transparent text-lg"
+          />
+        </div>
       </div>
+
+      {/* Page Title + Filter Section */}
+      <section className="container mx-auto px-4 py-6">
+        <p className="text-sm text-neutral">Shop</p>
+        <div className="flex justify-between items-center mt-1">
+          <h1 className="text-3xl font-semibold">Shoes & Sneakers</h1>
+          <span className="text-sm text-neutral">{products.length} items</span>
+        </div>
+      </section>
+
+      {/* Grid Section */}
+      <main className="container mx-auto px-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {products.map((product, i) => (
+            <div
+              key={i}
+              className="relative p-4 border border-base-200 hover:shadow-lg transition"
+            >
+              <div className="aspect-square relative">
+                <img
+                  src={product.thumbnail}
+                  alt={product.name}
+                  className="object-contain w-full h-full rounded-md"
+                />
+              </div>
+              <div className="mt-4">
+                <h2 className="text-base font-semibold">{product.name}</h2>
+                <p className="text-sm text-neutral">{product.price}</p>
+              </div>
+              <button className="absolute top-2 right-2 text-2xl text-neutral">
+                +
+              </button>
+            </div>
+          ))}
+        </div>
+      </main>
+
+      {/* Footer */}
+      <footer className="footer mt-20 p-10  text-base-content">
+        <div>
+          <span className="footer-title">Company</span>
+          <a className="link link-hover">About us</a>
+          <a className="link link-hover">Contact</a>
+        </div>
+        <div>
+          <span className="footer-title">Social</span>
+          <a className="link link-hover">Instagram</a>
+          <a className="link link-hover">Twitter</a>
+        </div>
+      </footer>
     </div>
   );
 }
