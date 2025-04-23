@@ -43,12 +43,12 @@ export default class UserModel {
     const collection = this.getCollection();
     let user = await collection.findOne({ username: payload.username });
     if (user) {
-      return "Username must be unique";
+      throw new CustomError("Username must be unique", 400);
     }
 
     user = await collection.findOne({ email: payload.email });
     if (user) {
-      return "Email must be unique";
+      throw new CustomError("Email must be unique", 400);
     }
 
     await collection.insertOne({
@@ -57,21 +57,5 @@ export default class UserModel {
     });
 
     return "Successfully registered";
-  }
-
-  static async login(payload: ILogin) {
-    loginSchema.parse(payload);
-
-    const collection = this.getCollection();
-
-    const user = await collection.findOne({ email: payload.email });
-    if (!user) throw new CustomError("Invalid email/password", 401);
-
-    const isValid = bcrypt.compareSync(payload.password, user.password);
-    if (!isValid) throw new CustomError("Invalid email/password", 401);
-
-    const token = jwt.sign({ _id: user._id }, "rahasia");
-
-    return token;
   }
 }
