@@ -75,7 +75,7 @@ export default class UserModel {
     const isValid = bcrypt.compareSync(payload.password, user.password);
     if (!isValid) throw new CustomError("Invalid email/password", 401);
 
-    const token = signToken({ _id: user._id.toString() });
+    const token = signToken({ _id: user._id.toString(), email: user.email });
 
     return token;
   }
