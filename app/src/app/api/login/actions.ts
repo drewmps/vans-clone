@@ -3,6 +3,13 @@
 import { IInput } from "@/app/login/page";
 import { cookies } from "next/headers";
 
+interface IResponseSuccess {
+  token: string;
+}
+interface IResponseFail {
+  message: string;
+}
+
 export async function doLogin(payload: IInput) {
   const resp = await fetch("http://localhost:3000/api/login", {
     method: "POST",
@@ -11,10 +18,11 @@ export async function doLogin(payload: IInput) {
     },
     body: JSON.stringify(payload),
   });
-  const result = await resp.json();
   if (!resp.ok) {
-    return { error: true, message: result.message };
+    const result: IResponseFail = await resp.json();
+    return { error: true, message: result.message as string };
   }
+  const result: IResponseSuccess = await resp.json();
   const cookieStore = await cookies();
   cookieStore.set({
     name: "access_token",
