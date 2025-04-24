@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import { getDB } from "../config/mongodb";
 import CustomError from "../exceptions/CustomError";
 
@@ -25,6 +26,15 @@ export default class ProductModel {
     const products = await collection.find().toArray();
 
     return products;
+  }
+
+  static async findProductById(id: string) {
+    const collection = this.getCollection();
+    const product = await collection.findOne({ _id: new ObjectId(id) });
+
+    if (!product) throw new CustomError("Product not found", 404);
+
+    return product;
   }
 
   static async findProductBySlug(slug: string) {

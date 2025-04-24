@@ -19,6 +19,10 @@ export interface ILogin {
   password: string;
 }
 
+export interface IFindOneUser {
+  email: string;
+}
+
 const newUserSchema = z.object({
   name: z.string(),
   username: z.string().min(1, { message: "Username is required" }),
@@ -40,6 +44,16 @@ export default class UserModel {
   static getCollection() {
     const db = getDB();
     return db.collection<IUser>("users");
+  }
+
+  static async findOne(payload: IFindOneUser) {
+    const collection = this.getCollection();
+
+    const user = await collection.findOne({ email: payload.email });
+    if (!user) {
+      throw new CustomError("User not found", 404);
+    }
+    return user;
   }
 
   static async register(payload: IUser): Promise<string> {
