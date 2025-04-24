@@ -39,7 +39,7 @@ export default async function RootLayout({
         {token?.value && (
           <div>
             <Link href={"/"}>Home</Link>
-            <Link href={"/product"}>Product</Link>
+            <Link href={"/products"}>Product</Link>
             <form action={handleLogout}>
               <button type="submit" className="cursor-pointer">
                 Logout
@@ -50,7 +50,7 @@ export default async function RootLayout({
         {!token?.value && (
           <div>
             <Link href={"/"}>Home</Link>
-            <Link href={"/product"}>Product</Link>
+            <Link href={"/products"}>Product</Link>
             <Link href={"/login"}>Login</Link>
             <Link href={"/register"}>Register</Link>
           </div>
