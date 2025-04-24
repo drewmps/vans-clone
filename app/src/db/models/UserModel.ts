@@ -4,6 +4,7 @@ import CustomError from "../exceptions/CustomError";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { getDB } from "../config/mongodb";
+import { signToken } from "../helpers/jwt";
 
 export interface IUser {
   name: string;
@@ -27,8 +28,11 @@ const newUserSchema = z.object({
 });
 
 const loginSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(5),
+  email: z
+    .string()
+    .email("Invalid email format")
+    .min(1, { message: "Username is required" }),
+  password: z.string().min(1, { message: "Password is required" }),
 });
 
 export default class UserModel {
@@ -57,5 +61,21 @@ export default class UserModel {
     });
 
     return "Successfully registered";
+  }
+
+  static async login(payload: ILogin) {
+    loginSchema.parse(payload);
+
+    const collection = this.getCollection();
+
+    const user = await collection.findOne({ email: payload.email });
+    if (!user) throw new CustomError("Invalid email/password", 401);
+
+    const isValid = bcrypt.compareSync(payload.password, user.password);
+    if (!isValid) throw new CustomError("Invalid email/password", 401);
+
+    const token = signToken({ _id: user._id.toString() });
+
+    return token;
   }
 }

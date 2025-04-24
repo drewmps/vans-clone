@@ -1,33 +1,63 @@
+"use client";
+import React, { useState } from "react";
+
+import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
+import { doLogin } from "../api/login/actions";
+
+export interface IInput {
+  email: string;
+  password: string;
+}
 export default function LoginPage() {
+  const router = useRouter();
+  const [input, setInput] = useState<IInput>({
+    email: "",
+    password: "",
+  });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setInput({
+      ...input,
+      [name]: value,
+    });
+  };
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const result = await doLogin(input);
+
+    if (result.error) {
+      Swal.fire({
+        icon: "error",
+        title: result.message,
+      });
+      return;
+    } else {
+      router.push("/");
+    }
+  };
   return (
-    <div className="max-w-md mx-auto p-4 flex flex-col gap-4 items-center text-center">
-      <img src="/vans-family-logo.png" alt="Vans Family" className="h-16" />
-
-      <h2 className="text-xl font-bold">Get in the Vans Family</h2>
-      <p className="text-gray-600 text-sm">
-        Earn and redeem points on purchases and unlock your next reward.
-      </p>
-
-      <div className="flex flex-col w-full gap-1 text-left">
-        <div className="flex flex-col  border border-solid py-1 px-2">
-          <label
-            htmlFor="email"
-            className="text-xs font-semibold text-gray-700"
-          >
-            Email *
-          </label>
-          <input
-            id="email"
-            type="email"
-            className="input input-bordered p-0 w-full"
-          />
-        </div>
-        <span className="text-xs text-gray-500">
-          Example: johndoe@email.com
-        </span>
-      </div>
-
-      <button className="btn btn-neutral w-full mt-2">Continue</button>
-    </div>
+    <>
+      <h1>Login Page</h1>
+      <form onSubmit={handleLogin}>
+        <label>Email</label>
+        <input name="email" value={input.email} onChange={handleChange} />
+        <br />
+        <label>Password</label>
+        <input
+          name="password"
+          value={input.password}
+          onChange={handleChange}
+          type="password"
+        />
+        <br />
+        <button type="submit" className="btn btn-neutral">
+          Register
+        </button>
+      </form>
+    </>
   );
 }
