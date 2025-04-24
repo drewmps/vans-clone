@@ -3,7 +3,7 @@
 import { IInput } from "./page";
 
 export async function doRegister(payload: IInput) {
-  const resp = await fetch("http://localhost:3000/api/register", {
+  const resp = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

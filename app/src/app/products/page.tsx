@@ -22,7 +22,7 @@ export default function ProductPage() {
 
   useEffect(() => {
     async function fetchProducts() {
-      const resp = await fetch("http://localhost:3000/api/products");
+      const resp = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/products`);
       const products: IProduct[] = await resp.json();
       setProducts(products);
     }

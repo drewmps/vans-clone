@@ -12,7 +12,9 @@ interface IError {
 
 export default async function ProductDetail(props: IProps) {
   const { slug } = await props.params;
-  const resp = await fetch(`http://localhost:3000/api/products/${slug}`);
+  const resp = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/products/${slug}`
+  );
   const data: IProduct = await resp.json();
   let error: string | undefined = undefined;
   if (!resp.ok) {
