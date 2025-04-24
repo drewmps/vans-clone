@@ -10,9 +10,9 @@ export async function doRegister(payload: IInput) {
     },
     body: JSON.stringify(payload),
   });
-  const result = await resp.json();
+  const result: { message: string } = await resp.json();
   if (!resp.ok) {
-    return { error: true, message: result.message };
+    return { error: true, message: result.message as string };
   }
-  return { error: false, message: result.message };
+  return { error: false, message: result.message as string };
 }
