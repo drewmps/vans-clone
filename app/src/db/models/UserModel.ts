@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { getDB } from "../config/mongodb";
 import { signToken } from "../helpers/jwt";
+import { hashPassword } from "../helpers/bcrypt";
 
 export interface IUser {
   name: string;
@@ -57,7 +58,7 @@ export default class UserModel {
 
     await collection.insertOne({
       ...payload,
-      password: bcrypt.hashSync(payload.password, 10),
+      password: hashPassword(payload.password),
     });
 
     return "Successfully registered";
