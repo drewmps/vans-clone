@@ -1,4 +1,5 @@
 import { getDB } from "../config/mongodb";
+import CustomError from "../exceptions/CustomError";
 
 export interface IProduct {
   name: string;
@@ -24,5 +25,14 @@ export default class ProductModel {
     const products = await collection.find().toArray();
 
     return products;
+  }
+
+  static async findProductBySlug(slug: string) {
+    const collection = this.getCollection();
+    const product = await collection.findOne({ slug });
+
+    if (!product) throw new CustomError("Product not found", 404);
+
+    return product;
   }
 }
