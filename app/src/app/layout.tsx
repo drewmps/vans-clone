@@ -40,6 +40,7 @@ export default async function RootLayout({
           <div>
             <Link href={"/"}>Home</Link>
             <Link href={"/products"}>Product</Link>
+            <Link href={"/wishlist"}>Wishlist</Link>
             <form action={handleLogout}>
               <button type="submit" className="cursor-pointer">
                 Logout
@@ -51,6 +52,7 @@ export default async function RootLayout({
           <div>
             <Link href={"/"}>Home</Link>
             <Link href={"/products"}>Product</Link>
+            <Link href={"/wishlist"}>Wishlist</Link>
             <Link href={"/login"}>Login</Link>
             <Link href={"/register"}>Register</Link>
           </div>

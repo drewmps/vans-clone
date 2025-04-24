@@ -9,6 +9,27 @@ export interface IWishlist {
   updateAt: string;
 }
 
+export interface IWishlistProduct {
+  _id: ObjectId;
+  name: string;
+  images: string[];
+  price: string;
+  thumbnail: string;
+  tags: string[];
+  slug: string;
+  createdAt: string;
+  updateAt: string;
+  description: string;
+  excerpt: string;
+}
+export interface IUserWishlist {
+  productId: ObjectId;
+  userId: ObjectId;
+  createdAt: string;
+  updateAt: string;
+  wishlistProduct: IWishlistProduct;
+}
+
 export interface IInputWishlist {
   userId: string;
   productId: string;
@@ -18,6 +39,11 @@ export default class WishlistModel {
   static getCollection() {
     const db = getDB();
     return db.collection<IWishlist>("wishlists");
+  }
+
+  static getUserWishlistCollection() {
+    const db = getDB();
+    return db.collection<IUserWishlist>("wishlists");
   }
 
   static async addWishlist(payload: IInputWishlist): Promise<string> {
@@ -46,9 +72,30 @@ export default class WishlistModel {
 
     return "Successfully added to wishlist";
   }
-  static async findAll() {
-    const collection = this.getCollection();
-    const wishlists = await collection.find().toArray();
+  static async findByUserId(userId: string) {
+    const collection = this.getUserWishlistCollection();
+    const wishlists = await collection
+      .aggregate([
+        {
+          $match: {
+            userId: new ObjectId(userId),
+          },
+        },
+        {
+          $lookup: {
+            from: "products",
+            localField: "productId",
+            foreignField: "_id",
+            as: "wishlistProduct",
+          },
+        },
+        {
+          $unwind: {
+            path: "$wishlistProduct",
+          },
+        },
+      ])
+      .toArray();
 
     return wishlists;
   }
