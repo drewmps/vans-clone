@@ -21,10 +21,39 @@ export default class ProductModel {
     return db.collection<IProduct>("products");
   }
 
-  static async findAll() {
+  static async findAll(page: string | null, searchQuery: string | null) {
     const collection = this.getCollection();
-    const products = await collection.find().toArray();
 
+    const limit = 5;
+    if (page && searchQuery) {
+      const skip = (+page - 1) * 5;
+      const products = await collection
+        .find({ name: { $regex: searchQuery, $options: "i" } })
+        .skip(skip)
+        .limit(limit)
+        .toArray();
+      return products;
+    }
+
+    if (page) {
+      const skip = (+page - 1) * 5;
+      const products = await collection
+        .find()
+        .skip(skip)
+        .limit(limit)
+        .toArray();
+      return products;
+    }
+
+    if (searchQuery) {
+      const products = await collection
+        .find({ name: { $regex: searchQuery, $options: "i" } })
+        .limit(limit)
+        .toArray();
+      return products;
+    }
+
+    const products = await collection.find().limit(limit).toArray();
     return products;
   }
 
