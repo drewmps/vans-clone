@@ -26,29 +26,56 @@ export interface IUserWishlist {
 }
 export default function WishlistPage() {
   const [wishlists, setWishlists] = useState<IUserWishlist[]>([]);
-  useEffect(() => {
-    async function fetchProducts() {
-      const resp = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/wishlists`);
-      if (!resp.ok) {
-        const result: { message: string } = await resp.json();
-        Swal.fire({
-          icon: "error",
-          title: result.message,
-        });
-        return;
-      }
-      const wishlists: IUserWishlist[] = await resp.json();
-      setWishlists(wishlists);
+
+  async function fetchProducts() {
+    const resp = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/wishlists`);
+    if (!resp.ok) {
+      const result: { message: string } = await resp.json();
+      Swal.fire({
+        icon: "error",
+        title: result.message,
+      });
+      return;
     }
+    const wishlists: IUserWishlist[] = await resp.json();
+    setWishlists(wishlists);
+  }
+  useEffect(() => {
     fetchProducts();
   }, []);
+
+  async function handleDelete(id: string) {
+    const resp = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/wishlists/${id}`,
+      {
+        method: "DELETE",
+      }
+    );
+
+    if (!resp.ok) {
+      const result: { message: string } = await resp.json();
+      Swal.fire({
+        icon: "error",
+        title: result.message,
+      });
+      return;
+    }
+    fetchProducts();
+  }
   return (
     <div>
       <h1>Wishlist</h1>
       {wishlists.map((wishlist) => {
         return (
           <div key={wishlist._id.toString()}>
-            {wishlist.wishlistProduct?.name}
+            {wishlist.wishlistProduct?.name} -{" "}
+            <button
+              onClick={() => {
+                handleDelete(wishlist._id.toString());
+              }}
+            >
+              Remove item
+            </button>
           </div>
         );
       })}

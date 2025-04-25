@@ -35,6 +35,10 @@ export interface IInputWishlist {
   productId: string;
 }
 
+export interface IInputDeleteWishlist {
+  id: string;
+}
+
 export default class WishlistModel {
   static getCollection() {
     const db = getDB();
@@ -72,6 +76,7 @@ export default class WishlistModel {
 
     return "Successfully added to wishlist";
   }
+
   static async findByUserId(userId: string) {
     const collection = this.getUserWishlistCollection();
     const wishlists = await collection
@@ -98,5 +103,26 @@ export default class WishlistModel {
       .toArray();
 
     return wishlists;
+  }
+
+  static async deleteWishlist(payload: IInputDeleteWishlist): Promise<string> {
+    const collection = this.getCollection();
+
+    if (!payload.id) {
+      throw new CustomError("id is required", 400);
+    }
+
+    const wishlist = await collection.findOne({
+      _id: new ObjectId(payload.id),
+    });
+    if (!wishlist) {
+      throw new CustomError("Wishlist not found", 404);
+    }
+
+    await collection.deleteOne({
+      _id: new ObjectId(payload.id),
+    });
+
+    return "Successfully delete wishlist";
   }
 }
