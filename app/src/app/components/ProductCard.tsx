@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { IProduct } from "../products/page";
 
+import AddToWishlistButton from "./AddToWishlistButton";
+
 export default function ProductCard({ product }: { product: IProduct }) {
   return (
     <div className="relative p-4 border border-base-200 hover:shadow-lg transition">
@@ -19,7 +21,7 @@ export default function ProductCard({ product }: { product: IProduct }) {
       </div>
       <div className="mt-4">
         <Link href={`/products/${product.slug}`}>See detail</Link>
-        <div>Add to wishlist</div>
+        <AddToWishlistButton productId={product._id.toString()} />
       </div>
     </div>
   );

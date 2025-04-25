@@ -1,5 +1,5 @@
-import { redirect } from "next/navigation";
 import { IProduct } from "../page";
+import AddToWishlistButton from "@/app/components/AddToWishlistButton";
 
 interface IProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -30,6 +30,7 @@ export default async function ProductDetail(props: IProps) {
     <div>
       <h1>Product Detail</h1>
       <div>{data.name}</div>
+      <AddToWishlistButton productId={data._id.toString()} />
     </div>
   );
 }
