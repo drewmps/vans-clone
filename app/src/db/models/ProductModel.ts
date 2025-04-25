@@ -35,7 +35,7 @@ export default class ProductModel {
       return products;
     }
 
-    if (page) {
+    if (page && !searchQuery) {
       const skip = (+page - 1) * 5;
       const products = await collection
         .find()
@@ -45,7 +45,7 @@ export default class ProductModel {
       return products;
     }
 
-    if (searchQuery) {
+    if (!page && searchQuery) {
       const products = await collection
         .find({ name: { $regex: searchQuery, $options: "i" } })
         .limit(limit)

@@ -4,6 +4,7 @@ import { ObjectId } from "mongodb";
 
 import { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
+import InfiniteScroll from "react-infinite-scroll-component";
 export interface IProduct {
   _id: ObjectId;
   name: string;
@@ -19,15 +20,37 @@ export interface IProduct {
 }
 export default function ProductPage() {
   const [products, setProducts] = useState<IProduct[]>([]);
+  const [page, setPage] = useState<number>(1);
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   useEffect(() => {
     async function fetchProducts() {
-      const resp = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/products`);
-      const products: IProduct[] = await resp.json();
-      setProducts(products);
+      let url = `${process.env.NEXT_PUBLIC_BASE_URL}/products`;
+      if (page === 1) {
+        url += `?page=${page}&searchQuery=${searchQuery}`;
+        const resp = await fetch(url);
+        const dataProducts: IProduct[] = await resp.json();
+        setProducts(dataProducts);
+      } else {
+        url += `?page=${page}&searchQuery=${searchQuery}`;
+        const resp = await fetch(url);
+        const dataProducts: IProduct[] = await resp.json();
+        setProducts(products.concat(dataProducts));
+      }
     }
     fetchProducts();
-  }, []);
+  }, [page]);
+  useEffect(() => {
+    async function fetchProducts() {
+      let url = `${process.env.NEXT_PUBLIC_BASE_URL}/products`;
+
+      url += `?searchQuery=${searchQuery}`;
+      const resp = await fetch(url);
+      const dataProducts: IProduct[] = await resp.json();
+      setProducts(dataProducts);
+    }
+    fetchProducts();
+  }, [searchQuery]);
   return (
     <div className="min-h-screen flex flex-col">
       <div className="flex items-center justify-center gap-4 w-full px-4 py-2">
@@ -50,6 +73,11 @@ export default function ProductPage() {
             type="text"
             placeholder="What are you looking for?"
             className="flex-grow outline-none bg-transparent text-lg"
+            value={searchQuery}
+            onChange={(e) => {
+              setPage(1);
+              setSearchQuery(e.target.value);
+            }}
           />
         </div>
       </div>
@@ -64,13 +92,22 @@ export default function ProductPage() {
       </section>
 
       {/* Grid Section */}
-      <main className="container mx-auto px-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {products.map((product) => (
-            <ProductCard key={product._id.toString()} product={product} />
-          ))}
-        </div>
-      </main>
+      <InfiniteScroll
+        dataLength={products.length}
+        next={() => {
+          setPage((prev) => prev + 1);
+        }}
+        hasMore={true}
+        loader={<h4>Loading...</h4>}
+      >
+        <main className="container mx-auto px-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {products.map((product) => (
+              <ProductCard key={product._id.toString()} product={product} />
+            ))}
+          </div>
+        </main>
+      </InfiniteScroll>
 
       {/* Footer */}
       <footer className="footer mt-20 p-10  text-base-content">
