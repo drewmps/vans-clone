@@ -2,9 +2,6 @@ import CustomError from "@/db/exceptions/CustomError";
 import ProductModel from "@/db/models/ProductModel";
 import { NextRequest } from "next/server";
 
-interface IParams {
-  params: Promise<{ id: string }>;
-}
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
