@@ -8,8 +8,6 @@ interface IParams {
 
 export async function DELETE(request: NextRequest, params: IParams) {
   try {
-    const userId = request.headers.get("x-user-id");
-    const email = request.headers.get("x-user-email");
     const { id } = await params.params;
     const message = await WishlistModel.deleteWishlist({ id });
     return Response.json({ message });

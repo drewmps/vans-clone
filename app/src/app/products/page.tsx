@@ -1,7 +1,7 @@
 "use client";
 
 import { ObjectId } from "mongodb";
-import Link from "next/link";
+
 import { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
 export interface IProduct {

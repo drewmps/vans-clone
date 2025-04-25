@@ -59,7 +59,7 @@ export default class WishlistModel {
       throw new CustomError("productId is required", 400);
     }
 
-    let item = await collection.findOne({
+    const item = await collection.findOne({
       productId: new ObjectId(payload.productId),
       userId: new ObjectId(payload.userId),
     });

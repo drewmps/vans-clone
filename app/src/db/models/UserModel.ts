@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import CustomError from "../exceptions/CustomError";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+
 import { getDB } from "../config/mongodb";
 import { signToken } from "../helpers/jwt";
 import { hashPassword } from "../helpers/bcrypt";
