@@ -5,11 +5,30 @@ import { NextRequest } from "next/server";
 interface IParams {
   params: Promise<{ id: string }>;
 }
-
-export async function DELETE(request: NextRequest, params: IParams) {
+interface IInput {
+  productId: string;
+}
+export async function DELETE(request: Request, params: IParams) {
   try {
     const { id } = await params.params;
-    const message = await WishlistModel.deleteWishlist({ id });
+    if (!id) {
+      throw new CustomError("wishlistId is required", 400);
+    }
+
+    const userId = request.headers.get("x-user-id");
+    if (!userId) {
+      throw new CustomError("userId is required", 400);
+    }
+
+    const body: IInput = await request.json();
+    if (!body.productId) {
+      throw new CustomError("productId is required", 400);
+    }
+
+    const message = await WishlistModel.deleteWishlist({
+      id,
+      userId,
+    });
     return Response.json({ message });
   } catch (err: unknown) {
     if (err instanceof CustomError) {

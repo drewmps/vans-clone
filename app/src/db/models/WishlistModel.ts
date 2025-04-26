@@ -37,6 +37,7 @@ export interface IInputWishlist {
 
 export interface IInputDeleteWishlist {
   id: string;
+  userId: string;
 }
 
 export default class WishlistModel {
@@ -109,7 +110,7 @@ export default class WishlistModel {
     const collection = this.getCollection();
 
     if (!payload.id) {
-      throw new CustomError("id is required", 400);
+      throw new CustomError("wishlistId is required", 400);
     }
 
     const wishlist = await collection.findOne({
@@ -117,6 +118,10 @@ export default class WishlistModel {
     });
     if (!wishlist) {
       throw new CustomError("Wishlist not found", 404);
+    }
+
+    if (wishlist.userId.toString() !== payload.userId) {
+      throw new CustomError("Forbidden to delete wishlist", 403);
     }
 
     await collection.deleteOne({

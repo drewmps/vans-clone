@@ -44,11 +44,15 @@ export default function WishlistPage() {
     fetchProducts();
   }, []);
 
-  async function handleDelete(id: string) {
+  async function handleDelete(id: string, productId: string) {
     const resp = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/wishlists/${id}`,
       {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ productId }),
       }
     );
 
@@ -71,7 +75,10 @@ export default function WishlistPage() {
             {wishlist.wishlistProduct?.name} -{" "}
             <button
               onClick={() => {
-                handleDelete(wishlist._id.toString());
+                handleDelete(
+                  wishlist._id.toString(),
+                  wishlist.productId.toString()
+                );
               }}
             >
               Remove item
