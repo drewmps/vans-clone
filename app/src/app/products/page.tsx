@@ -5,6 +5,7 @@ import { ObjectId } from "mongodb";
 import { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
 import InfiniteScroll from "react-infinite-scroll-component";
+import Swal from "sweetalert2";
 export interface IProduct {
   _id: ObjectId;
   name: string;
@@ -28,12 +29,34 @@ export default function ProductPage() {
       let url = `${process.env.NEXT_PUBLIC_BASE_URL}/products`;
       if (page === 1) {
         url += `?page=${page}&searchQuery=${searchQuery}`;
+
         const resp = await fetch(url);
+        if (!resp.ok) {
+          const result: { message: string } = await resp.json();
+          setProducts([]);
+          Swal.fire({
+            icon: "error",
+            title: result.message,
+          });
+          return;
+        }
+
         const dataProducts: IProduct[] = await resp.json();
         setProducts(dataProducts);
       } else {
         url += `?page=${page}&searchQuery=${searchQuery}`;
         const resp = await fetch(url);
+
+        if (!resp.ok) {
+          const result: { message: string } = await resp.json();
+          setProducts([]);
+          Swal.fire({
+            icon: "error",
+            title: result.message,
+          });
+          return;
+        }
+
         const dataProducts: IProduct[] = await resp.json();
         setProducts(products.concat(dataProducts));
       }
@@ -46,6 +69,16 @@ export default function ProductPage() {
 
       url += `?searchQuery=${searchQuery}`;
       const resp = await fetch(url);
+      if (!resp.ok) {
+        const result: { message: string } = await resp.json();
+        setProducts([]);
+        Swal.fire({
+          icon: "error",
+          title: result.message,
+        });
+        return;
+      }
+
       const dataProducts: IProduct[] = await resp.json();
       setProducts(dataProducts);
     }
