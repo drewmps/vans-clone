@@ -36,7 +36,7 @@ export default async function ProductDetail(props: IProps) {
   const resp = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/products/${slug}`
   );
-  const data: IProduct = await resp.json();
+
   let error: string | undefined = undefined;
   if (!resp.ok) {
     const data: IError = await resp.json();
@@ -46,6 +46,8 @@ export default async function ProductDetail(props: IProps) {
   if (error) {
     return <h1 style={{ color: "red" }}>{error}</h1>;
   }
+
+  const data: IProduct = await resp.json();
 
   return (
     <div>
