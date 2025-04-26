@@ -50,10 +50,31 @@ export default async function ProductDetail(props: IProps) {
   const data: IProduct = await resp.json();
 
   return (
-    <div>
-      <h1>Product Detail</h1>
-      <div>{data.name}</div>
-      <AddToWishlistButton productId={data._id.toString()} />
+    <div className="px-4 flex flex-col gap-3">
+      <h1 className="text-2xl">Product Detail</h1>
+      <div className="carousel rounded-box">
+        {data?.images?.map((image) => {
+          return (
+            <div key={image} className="carousel-item">
+              <img src={image} alt="" className="h-96 w-96 object-cover" />
+            </div>
+          );
+        })}
+      </div>
+      <div className="text-lg">{data.name}</div>
+      <div>{data.description}</div>
+      <div>
+        {data?.tags?.map((tag, index, tags) => {
+          if (index === tags?.length - 1) {
+            return <span key={tag}>{tag}</span>;
+          }
+          return <span key={tag}>{tag}, </span>;
+        })}
+      </div>
+      <div>{data.price}</div>
+      <div className="w-50">
+        <AddToWishlistButton productId={data._id.toString()} />
+      </div>
     </div>
   );
 }
