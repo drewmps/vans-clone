@@ -41,21 +41,26 @@ export default function LoginPage() {
   };
   return (
     <>
-      <h1>Login Page</h1>
-      <form onSubmit={handleLogin}>
-        <label>Email</label>
-        <input name="email" value={input.email} onChange={handleChange} />
-        <br />
-        <label>Password</label>
-        <input
-          name="password"
-          value={input.password}
-          onChange={handleChange}
-          type="password"
-        />
-        <br />
+      <form
+        onSubmit={handleLogin}
+        className="flex flex-col gap-2 mx-auto w-1/3 mt-5"
+      >
+        <h1 className="text-lg text-center">Welcome to Vans</h1>
+        <div className="border border-solid flex flex-col px-3 py-2">
+          <label>Email</label>
+          <input name="email" value={input.email} onChange={handleChange} />
+        </div>
+        <div className="border border-solid flex flex-col px-3 py-2">
+          <label>Password</label>
+          <input
+            name="password"
+            value={input.password}
+            onChange={handleChange}
+            type="password"
+          />
+        </div>
         <button type="submit" className="btn btn-neutral">
-          Register
+          Log In
         </button>
       </form>
     </>
