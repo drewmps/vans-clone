@@ -33,5 +33,12 @@ export default function AddToWishlistButton({
     }
     router.push("/wishlist");
   }
-  return <div onClick={handleAdd}>Add to wishlist</div>;
+  return (
+    <button
+      onClick={handleAdd}
+      className="px-4 py-2 bg-black text-white rounded-sm cursor-pointer"
+    >
+      Add to wishlist
+    </button>
+  );
 }
