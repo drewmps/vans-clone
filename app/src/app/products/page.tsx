@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Swal from "sweetalert2";
+import { useDebounce } from "use-debounce";
 export interface IProduct {
   _id: ObjectId;
   name: string;
@@ -23,12 +24,13 @@ export default function ProductPage() {
   const [products, setProducts] = useState<IProduct[]>([]);
   const [page, setPage] = useState<number>(1);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [debouncedSearchQuery] = useDebounce(searchQuery, 1000);
 
   useEffect(() => {
     async function fetchProducts() {
       let url = `${process.env.NEXT_PUBLIC_BASE_URL}/products`;
       if (page === 1) {
-        url += `?page=${page}&searchQuery=${searchQuery}`;
+        url += `?page=${page}&searchQuery=${debouncedSearchQuery}`;
 
         const resp = await fetch(url);
         if (!resp.ok) {
@@ -44,7 +46,7 @@ export default function ProductPage() {
         const dataProducts: IProduct[] = await resp.json();
         setProducts(dataProducts);
       } else {
-        url += `?page=${page}&searchQuery=${searchQuery}`;
+        url += `?page=${page}&searchQuery=${debouncedSearchQuery}`;
         const resp = await fetch(url);
 
         if (!resp.ok) {
@@ -67,7 +69,7 @@ export default function ProductPage() {
     async function fetchProducts() {
       let url = `${process.env.NEXT_PUBLIC_BASE_URL}/products`;
 
-      url += `?searchQuery=${searchQuery}`;
+      url += `?searchQuery=${debouncedSearchQuery}`;
       const resp = await fetch(url);
       if (!resp.ok) {
         const result: { message: string } = await resp.json();
@@ -83,7 +85,7 @@ export default function ProductPage() {
       setProducts(dataProducts);
     }
     fetchProducts();
-  }, [searchQuery]);
+  }, [debouncedSearchQuery]);
   return (
     <div className="min-h-screen flex flex-col">
       <div className="flex items-center justify-center gap-4 w-full px-4 py-2">
@@ -113,6 +115,7 @@ export default function ProductPage() {
             }}
           />
         </div>
+        <div>Debounced query: {debouncedSearchQuery}</div>
       </div>
 
       {/* Page Title + Filter Section */}
