@@ -1,6 +1,5 @@
 import CustomError from "@/db/exceptions/CustomError";
 import WishlistModel from "@/db/models/WishlistModel";
-import { NextRequest } from "next/server";
 
 interface IParams {
   params: Promise<{ id: string }>;
