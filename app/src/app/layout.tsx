@@ -37,11 +37,16 @@ export default async function RootLayout({
       // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {token?.value && (
-          <div>
-            <Link href={"/"}>Home</Link>
-            <Link href={"/products"}>Product</Link>
-            <Link href={"/wishlist"}>Wishlist</Link>
-            <form action={handleLogout}>
+          <div className="flex justify-between px-4 py-1">
+            <div className="flex gap-2 items-center">
+              <Link href={"/"}>Home</Link>
+              <Link href={"/products"}>Product</Link>
+              <Link href={"/wishlist"}>Wishlist</Link>
+            </div>
+            <div>
+              <img src="/vans-navbar-logo.png" alt="" />
+            </div>
+            <form action={handleLogout} className="flex items-center">
               <button type="submit" className="cursor-pointer">
                 Logout
               </button>
@@ -49,12 +54,20 @@ export default async function RootLayout({
           </div>
         )}
         {!token?.value && (
-          <div>
-            <Link href={"/"}>Home</Link>
-            <Link href={"/products"}>Product</Link>
-            <Link href={"/wishlist"}>Wishlist</Link>
-            <Link href={"/login"}>Login</Link>
-            <Link href={"/register"}>Register</Link>
+          <div className="flex justify-between px-4 py-1">
+            <div className="flex gap-2 items-center">
+              <Link href={"/"}>Home</Link>
+              <Link href={"/products"}>Product</Link>
+              <Link href={"/wishlist"}>Wishlist</Link>
+            </div>
+            <div>
+              <img src="/vans-navbar-logo.png" alt="" />
+            </div>
+
+            <div className="flex gap-2 items-center">
+              <Link href={"/login"}>Login</Link>
+              <Link href={"/register"}>Register</Link>
+            </div>
           </div>
         )}
 
