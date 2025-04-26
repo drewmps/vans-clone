@@ -117,7 +117,7 @@ export default function ProductPage() {
             />
           </div>
           {debouncedSearchQuery && (
-            <div>Results for '{debouncedSearchQuery}'</div>
+            <div>Results for &apos;{debouncedSearchQuery}&apos;</div>
           )}
         </div>
       </div>
