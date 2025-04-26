@@ -67,22 +67,37 @@ export default function WishlistPage() {
     fetchProducts();
   }
   return (
-    <div>
-      <h1>Wishlist</h1>
+    <div className="p-4">
+      <h1 className="text-2xl font-semibold mb-4">Wishlist</h1>
       {wishlists.map((wishlist) => {
         return (
-          <div key={wishlist._id.toString()}>
-            {wishlist.wishlistProduct?.name} -{" "}
-            <button
-              onClick={() => {
-                handleDelete(
-                  wishlist._id.toString(),
-                  wishlist.productId.toString()
-                );
-              }}
-            >
-              Remove item
-            </button>
+          <div
+            key={wishlist._id.toString()}
+            className="border-b border-solid py-2"
+          >
+            <h1 className="text-base font-semibold mb-3">
+              {wishlist.wishlistProduct?.name}
+            </h1>
+            <div className="flex flex-row justify-between">
+              <img
+                src={wishlist.wishlistProduct?.thumbnail}
+                className="h-30 w-30 object-cover"
+              />
+              <p>{wishlist.wishlistProduct?.price}</p>
+            </div>
+            <div className="flex flex-row-reverse">
+              <button
+                onClick={() => {
+                  handleDelete(
+                    wishlist._id.toString(),
+                    wishlist.productId.toString()
+                  );
+                }}
+                className="cursor-pointer border border-solid rounded-sm text-black bg-white px-4 py-2"
+              >
+                Remove Item
+              </button>
+            </div>
           </div>
         );
       })}
