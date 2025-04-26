@@ -10,7 +10,6 @@ export async function POST(request: Request) {
 
     return Response.json({ message }, { status: 201 });
   } catch (err: unknown) {
-    console.log(err, "ini error");
     if (err instanceof ZodError) {
       const error = err.errors[0];
       return Response.json(
