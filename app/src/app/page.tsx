@@ -85,36 +85,39 @@ export default async function Home() {
         </Link>
       </div>
 
-      <div className="p-4 bg-black text-white">
-        <h1 className="font-semibold text-2xl mb-4">About us</h1>
-        <p>
-          Since 1966, Vans has been all about creative expression, community,
-          and authenticity.
-        </p>
-        <p>
-          Born in Anaheim, California, Vans started as a small family business
-          making rugged, sticky-soled shoes for local skateboarders. With our
-          now-iconic waffle sole and bold designs, we quickly became a staple
-          not just for skaters, but for surfers, BMX riders, artists, musicians,
-          and anyone who wanted to express themselves without limits.
-        </p>
-        <p>
-          Over the decades, Vans has grown from a humble shoe company into a
-          global symbol of youth culture. We have built skateparks, sponsored
-          athletes, hosted music festivals, and collaborated with countless
-          artists and brands, always pushing creativity forward.
-        </p>
-        <p>
-          Our core belief is simple. Off the Wall is not just a slogan. It is a
-          spirit. It is about thinking differently, living authentically, and
-          embracing the things that make you unique.
-        </p>
-        <p>
-          Today, whether it is through our shoes, our apparel, or our global
-          community initiatives, we are proud to continue inspiring generations
-          to be bold, be original, and be proud of who they are.
-        </p>
-        <p>Thanks for riding with us.</p>
+      <div className="p-6 bg-black text-white ">
+        <div className="flex flex-col gap-3 w-1/2">
+          <h1 className="font-semibold text-2xl mb-4">About us</h1>
+          <p>
+            Since 1966, Vans has been all about creative expression, community,
+            and authenticity.
+          </p>
+          <p>
+            Born in Anaheim, California, Vans started as a small family business
+            making rugged, sticky-soled shoes for local skateboarders. With our
+            now-iconic waffle sole and bold designs, we quickly became a staple
+            not just for skaters, but for surfers, BMX riders, artists,
+            musicians, and anyone who wanted to express themselves without
+            limits.
+          </p>
+          <p>
+            Over the decades, Vans has grown from a humble shoe company into a
+            global symbol of youth culture. We have built skateparks, sponsored
+            athletes, hosted music festivals, and collaborated with countless
+            artists and brands, always pushing creativity forward.
+          </p>
+          <p>
+            Our core belief is simple. Off the Wall is not just a slogan. It is
+            a spirit. It is about thinking differently, living authentically,
+            and embracing the things that make you unique.
+          </p>
+          <p>
+            Today, whether it is through our shoes, our apparel, or our global
+            community initiatives, we are proud to continue inspiring
+            generations to be bold, be original, and be proud of who they are.
+          </p>
+          <p>Thanks for riding with us.</p>
+        </div>
       </div>
     </>
   );
