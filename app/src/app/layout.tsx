@@ -37,7 +37,7 @@ export default async function RootLayout({
       // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {token?.value && (
-          <div className="flex justify-between px-4 py-1">
+          <div className="flex justify-between px-4 py-3">
             <div className="flex gap-2 items-center">
               <Link href={"/"}>Home</Link>
               <Link href={"/products"}>Product</Link>
@@ -54,7 +54,7 @@ export default async function RootLayout({
           </div>
         )}
         {!token?.value && (
-          <div className="flex justify-between px-4 py-1">
+          <div className="flex justify-between px-4 py-3">
             <div className="flex gap-2 items-center">
               <Link href={"/"}>Home</Link>
               <Link href={"/products"}>Product</Link>
